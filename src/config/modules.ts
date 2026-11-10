@@ -6,7 +6,7 @@ import {
   ChartNoAxesCombined,
   FileText,
   Link,
-  Smile,
+  Users,
   Headset,
 } from "lucide-react";
 import type { PortalModule } from "@/types/module";
@@ -34,6 +34,6 @@ export const secondaryModules: PortalModule[] = [
   { id: "faturamento", name: "Faturamento", image: faturamentoImg, imageAlt: "Documento de fatura sobre a mesa", icon: FileText, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
   { id: "links", name: "Links", visual: "links-graphic", imageAlt: "Ícone de corrente representando links úteis", icon: Link, url: "#", openInNewTab: false, accentColor: "yellow", enabled: true },
   // PLACEHOLDER: substituir pelo logotipo oficial JOY (J vermelho, O verde, Y roxo) definindo `image`.
-  { id: "joy", name: "JOY", visual: "joy-logo-placeholder", imageAlt: "Espaço reservado para o logotipo JOY", icon: Smile, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
+  { id: "joy", name: "JOY", visual: "joy-logo-placeholder", imageAlt: "Espaço reservado para o logotipo JOY", icon: Users, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
   { id: "abigail", name: "Abigail", image: abigailImg, imageAlt: "Estação de atendimento com headset e computador", icon: Headset, url: "#", openInNewTab: false, accentColor: "yellow", enabled: true },
 ];

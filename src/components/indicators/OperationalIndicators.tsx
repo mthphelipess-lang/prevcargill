@@ -30,7 +30,7 @@ export function OperationalIndicators() {
   const d = state === "success" ? data : null;
 
   return (
-    <section aria-label="Indicadores operacionais" className="mt-6 overflow-hidden rounded-card border border-border bg-background shadow-card">
+    <section aria-label="Indicadores operacionais" className="mt-3 overflow-hidden rounded-xl border border-border bg-background shadow-card">
       <div className="grid grid-cols-1 divide-y divide-border min-[480px]:grid-cols-2 md:grid-cols-3 md:divide-y-0 xl:grid-cols-5 xl:divide-x">
         <OperationalIndicator icon={Truck} label="Operação de Recebimento" isHeading />
         <OperationalIndicator icon={Truck} label="Caminhões hoje" loading={loading} value={d?.trucksToday != null ? String(d.trucksToday) : null} />

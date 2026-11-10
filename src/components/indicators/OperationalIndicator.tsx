@@ -6,7 +6,7 @@ type Props = { icon: LucideIcon; label: string; value?: string | null; loading?:
 export function OperationalIndicator({ icon: Icon, label, value, loading, isHeading }: Props) {
   const missing = value === null || value === undefined || value === "";
   return (
-    <div className="flex min-h-[72px] items-center gap-3 px-4 py-3">
+    <div className="flex min-h-[64px] items-center gap-3 px-4 py-2">
       <span className={isHeading ? "flex size-11 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground" : "flex size-11 shrink-0 items-center justify-center rounded-full bg-muted text-primary"}>
         <Icon className="size-6" aria-hidden="true" />
       </span>
@@ -18,7 +18,7 @@ export function OperationalIndicator({ icon: Icon, label, value, loading, isHead
           {loading ? (
             <Skeleton className="mt-1 h-7 w-20" />
           ) : (
-            <p className="text-[26px] font-bold leading-tight text-foreground">
+            <p className="text-[22px] font-bold leading-tight whitespace-nowrap min-[1440px]:text-[26px] text-foreground">
               {missing ? (
                 <>
                   <span aria-hidden="true">--</span>

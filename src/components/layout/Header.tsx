@@ -17,7 +17,7 @@ export function Header() {
   const count = user.notificationCount;
 
   return (
-    <header className="relative h-[104px] w-full md:h-[132px] xl:h-[152px]">
+    <header className="relative h-[104px] w-full border-b-4 border-primary md:h-[132px] xl:h-[152px]">
       <BrandBanner />
       <div className="relative flex h-full items-start justify-end p-2 md:p-4">
         <div className="flex items-center gap-1 rounded-xl bg-background/95 px-2 py-1 text-[15px] font-medium text-foreground shadow-card md:gap-2 md:px-4 md:py-2 lg:text-base">

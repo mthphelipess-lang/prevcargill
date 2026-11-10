@@ -8,7 +8,9 @@ export function Footer() {
       <div className="portal-container flex flex-col gap-4 py-5 text-[15px] md:min-h-[76px] md:flex-row md:items-center md:justify-between md:py-3">
         <div className="flex items-center gap-4">
           {portalConfig.logoUrl ? (
-            <img src={portalConfig.logoUrl} alt={portalConfig.logoAlt} className="h-9 w-auto" />
+            <span className="flex items-center rounded-md bg-background px-3 py-1.5">
+              <img src={portalConfig.logoUrl} alt={portalConfig.logoAlt} className="h-8 w-auto" />
+            </span>
           ) : (
             <span className="rounded border border-dashed border-primary-foreground/60 px-3 py-1.5 text-xs font-semibold tracking-widest" role="img" aria-label="Espaço reservado para o logotipo">
               LOGO

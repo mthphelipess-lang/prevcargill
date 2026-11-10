@@ -6,6 +6,13 @@ import type { PortalModule } from "@/types/module";
 
 function ModuleVisual({ module }: { module: PortalModule }) {
   if (module.image) {
+    if (module.id === "joy") {
+      return (
+        <div className="flex h-full w-full items-center justify-center bg-background p-6">
+          <img src={module.image} alt={module.imageAlt} loading="lazy" width={1212} height={414} className="max-h-full w-auto max-w-full object-contain" />
+        </div>
+      );
+    }
     return <img src={module.image} alt={module.imageAlt} loading="lazy" width={992} height={672} className="h-full w-full object-cover" />;
   }
   if (module.visual === "ppr-graphic") {

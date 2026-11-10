@@ -16,6 +16,7 @@ import guichesImg from "@/assets/images/module-guiches.jpg";
 import safraImg from "@/assets/images/module-safra.jpg";
 import faturamentoImg from "@/assets/images/module-faturamento.jpg";
 import abigailImg from "@/assets/images/module-abigail.jpg";
+import joyLogo from "@/assets/logo-joy.png.asset.json";
 
 /**
  * Configuração dos módulos do portal.
@@ -33,7 +34,6 @@ export const secondaryModules: PortalModule[] = [
   { id: "ppr", name: "PPR", visual: "ppr-graphic", imageAlt: "Composição gráfica de indicadores em verde", icon: ChartNoAxesCombined, url: "#", openInNewTab: false, accentColor: "yellow", enabled: true },
   { id: "faturamento", name: "Faturamento", image: faturamentoImg, imageAlt: "Documento de fatura sobre a mesa", icon: FileText, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
   { id: "links", name: "Links", visual: "links-graphic", imageAlt: "Ícone de corrente representando links úteis", icon: Link, url: "#", openInNewTab: false, accentColor: "yellow", enabled: true },
-  // PLACEHOLDER: substituir pelo logotipo oficial JOY (J vermelho, O verde, Y roxo) definindo `image`.
-  { id: "joy", name: "JOY", visual: "joy-logo-placeholder", imageAlt: "Espaço reservado para o logotipo JOY", icon: Users, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
+  { id: "joy", name: "JOY", image: joyLogo.url, imageAlt: "Logotipo JOY: J vermelho, O verde e Y roxo", icon: Users, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
   { id: "abigail", name: "Abigail", image: abigailImg, imageAlt: "Estação de atendimento com headset e computador", icon: Headset, url: "#", openInNewTab: false, accentColor: "yellow", enabled: true },
 ];

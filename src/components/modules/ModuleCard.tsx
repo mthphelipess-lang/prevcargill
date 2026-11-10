@@ -82,7 +82,7 @@ export function ModuleCard({ module }: { module: PortalModule }) {
           : "cursor-pointer hover:-translate-y-0.5 hover:border-primary hover:shadow-card-hover",
       )}
     >
-      <div className="aspect-[16/9] w-full overflow-hidden bg-muted">
+      <div className="aspect-[16/7] w-full overflow-hidden bg-muted">
         <ModuleVisual module={module} />
       </div>
       <div className="flex flex-1 items-center gap-3 px-4 py-3">

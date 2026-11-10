@@ -79,8 +79,8 @@
   --joy-j: oklch(0.56 0.22 27);
   --joy-o: oklch(0.5 0.13 152);
   --joy-y: oklch(0.45 0.18 305);
-  --shadow-card: 0 1px 3px oklch(0.21 0.012 155 / 6%);
-  --shadow-card-hover: 0 8px 20px -6px oklch(0.4 0.1 154 / 22%);
+  --shadow-card: 0 1px 2px oklch(0.21 0.012 155 / 4%);
+  --shadow-card-hover: 0 3px 8px -2px oklch(0.4 0.1 154 / 14%);
 }
 
 @layer base {

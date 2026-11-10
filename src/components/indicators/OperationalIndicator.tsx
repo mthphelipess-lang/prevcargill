@@ -18,7 +18,7 @@ export function OperationalIndicator({ icon: Icon, label, value, loading, isHead
           {loading ? (
             <Skeleton className="mt-1 h-7 w-20" />
           ) : (
-            <p className="text-[26px] font-bold leading-tight text-foreground">
+            <p className="text-[22px] font-bold leading-tight whitespace-nowrap min-[1440px]:text-[26px] text-foreground">
               {missing ? (
                 <>
                   <span aria-hidden="true">--</span>

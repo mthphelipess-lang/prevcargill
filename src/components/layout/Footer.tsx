@@ -2,6 +2,8 @@ import { Mail } from "lucide-react";
 import { portalConfig } from "@/config/portal";
 
 export function Footer() {
+  // O traço inicial faz parte da exibição pedida, mas não pode ir no mailto.
+  const mailto = portalConfig.supportEmail.replace(/^-+/, "");
   return (
     <footer className="mt-8 bg-primary-dark text-primary-foreground">
       <div className="portal-container flex flex-col gap-4 py-5 text-[15px] md:min-h-[76px] md:flex-row md:items-center md:justify-between md:py-3">

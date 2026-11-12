@@ -9,5 +9,5 @@ export const portalConfig = {
   bannerImage,
   bannerAlt: "Unidade industrial com silos e caminhões na área de recebimento",
   supportLabel: "Suporte",
-  supportEmail: "goiania-recepcao-cargillonly@exch.cargill.com",
+  supportEmail: "-goiania-recepcao-cargillonly@exch.cargill.com",
 };

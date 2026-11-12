@@ -5,6 +5,20 @@ import { cn } from "@/lib/utils";
 import type { PortalModule } from "@/types/module";
 
 function ModuleVisual({ module }: { module: PortalModule }) {
+  if (module.video) {
+    return (
+      <video
+        src={module.video}
+        muted
+        loop
+        autoPlay
+        playsInline
+        preload="metadata"
+        aria-label={module.imageAlt}
+        className="h-full w-full object-cover"
+      />
+    );
+  }
   if (module.image) {
     if (module.id === "joy") {
       return (

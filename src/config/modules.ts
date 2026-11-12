@@ -16,6 +16,7 @@ import guichesImg from "@/assets/images/module-guiches.jpg";
 import safraImg from "@/assets/images/module-safra.jpg";
 import faturamentoImg from "@/assets/images/module-faturamento.jpg";
 import abigailImg from "@/assets/images/module-abigail.jpg";
+import abigailVideo from "@/assets/video-abigail.mp4.asset.json";
 import joyLogo from "@/assets/logo-joy.png.asset.json";
 
 /**
@@ -36,5 +37,5 @@ export const secondaryModules: PortalModule[] = [
   { id: "faturamento", name: "Faturamento", image: faturamentoImg, imageAlt: "Documento de fatura sobre a mesa", icon: FileText, url: "#", openInNewTab: false, accentColor: "green", enabled: true },
   { id: "links", name: "Links", visual: "links-graphic", imageAlt: "Ícone de corrente representando links úteis", icon: Link, url: "https://hub.cargill.com/", openInNewTab: true, accentColor: "yellow", enabled: true },
   { id: "joy", name: "JOY", image: joyLogo.url, imageAlt: "Logotipo JOY: J vermelho, O verde e Y roxo", icon: Users, url: "https://apps.powerapps.com/play/e/9bc94927-f821-4327-8700-42128a1363c4/a/562c619a-2bfa-4f52-bce3-2e5b3bcd4d02?tenantId=57368c21-b8cf-42cf-bd0b-43ecd4bc62ae&hint=88bada87-f6b6-4f99-a93c-802a4a562956&sourcetime=1715283631915&hidenavbar=true", openInNewTab: true, accentColor: "green", enabled: true },
-  { id: "abigail", name: "Abigail", image: abigailImg, imageAlt: "Estação de atendimento com headset e computador", icon: Headset, url: "https://abigail.ia.cargill.com/", openInNewTab: true, accentColor: "yellow", enabled: true },
+  { id: "abigail", name: "Abigail", image: abigailImg, video: abigailVideo.url, imageAlt: "Vídeo de demonstração da Abigail", icon: Headset, url: "https://abigail.ia.cargill.com/", openInNewTab: true, accentColor: "yellow", enabled: true },
 ];

@@ -25,11 +25,6 @@ export function Footer() {
               {portalConfig.supportLabel}: {portalConfig.supportEmail}
             </span>
           </a>
-          <span className="hidden h-6 w-px bg-primary-foreground/40 md:block" aria-hidden="true" />
-          <a href={`tel:${tel}`} className="flex min-h-11 items-center gap-2 rounded hover:underline">
-            <Phone className="size-5 text-accent" aria-hidden="true" />
-            <span>{portalConfig.supportPhone}</span>
-          </a>
         </div>
       </div>
     </footer>

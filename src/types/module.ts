@@ -5,6 +5,8 @@ export type PortalModule = {
   name: string;
   description?: string;
   image?: string;
+  /** Vídeo exibido na área superior do card no lugar da imagem. */
+  video?: string;
   icon: LucideIcon;
   url: string;
   openInNewTab: boolean;

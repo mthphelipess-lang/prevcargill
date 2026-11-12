@@ -16,6 +16,7 @@ import guichesImg from "@/assets/images/module-guiches.jpg";
 import safraImg from "@/assets/images/module-safra.jpg";
 import faturamentoImg from "@/assets/images/module-faturamento.jpg";
 import abigailImg from "@/assets/images/module-abigail.jpg";
+import abigailVideo from "@/assets/video-abigail.mp4.asset.json";
 import joyLogo from "@/assets/logo-joy.png.asset.json";
 
 /**

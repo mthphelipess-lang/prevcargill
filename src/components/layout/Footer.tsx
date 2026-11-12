@@ -21,7 +21,7 @@ export function Footer() {
           <span className="font-semibold">{portalConfig.name}</span>
         </div>
         <div className="flex flex-col gap-1 md:flex-row md:items-center md:gap-4">
-          <a href={`mailto:${portalConfig.supportEmail}`} className="flex min-h-11 items-center gap-2 rounded hover:underline">
+          <a href={`mailto:${mailto}`} className="flex min-h-11 items-center gap-2 rounded hover:underline">
             <Mail className="size-5 text-accent" aria-hidden="true" />
             <span>
               {portalConfig.supportLabel}: {portalConfig.supportEmail}

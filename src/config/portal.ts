@@ -8,8 +8,6 @@ export const portalConfig = {
   logoAlt: "Logotipo da Cargill",
   bannerImage,
   bannerAlt: "Unidade industrial com silos e caminhões na área de recebimento",
-  // PLACEHOLDER: validar e-mail e telefone oficiais antes da publicação.
   supportLabel: "Suporte",
-  supportEmail: "logistica.recebimento@empresa.com",
-  supportPhone: "(00) 0000-0000",
+  supportEmail: "goiania-recepcao-cargillonly@exch.cargill.com",
 };

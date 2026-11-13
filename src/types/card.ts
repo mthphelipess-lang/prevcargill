@@ -24,6 +24,40 @@ export type CardRow = {
 /** Valores editáveis do formulário de card. */
 export type CardDraft = Omit<CardRow, "id" | "created_at" | "updated_at" | "created_by" | "updated_by">;
 
+/** O que a reprodução visual do card precisa — serve para linha do banco e rascunho. */
+export type CardVisual = Pick<
+  CardRow,
+  | "name"
+  | "description"
+  | "icon_name"
+  | "image_url"
+  | "image_alt"
+  | "video_url"
+  | "image_fit"
+  | "placeholder_style"
+  | "destination_url"
+  | "open_in_new_tab"
+  | "enabled"
+  | "accent_color"
+>;
+
+export function draftToVisual(draft: CardDraft): CardVisual {
+  return {
+    name: draft.name,
+    description: draft.description,
+    icon_name: draft.icon_name,
+    image_url: draft.image_url,
+    image_alt: draft.image_alt,
+    video_url: draft.video_url,
+    image_fit: draft.image_fit,
+    placeholder_style: draft.placeholder_style,
+    destination_url: draft.destination_url,
+    open_in_new_tab: draft.open_in_new_tab,
+    enabled: draft.enabled,
+    accent_color: draft.accent_color,
+  };
+}
+
 export type CardGroup = "primary" | "secondary";
 export type AccentColor = "green" | "yellow";
 export type ImageFit = "cover" | "contain";

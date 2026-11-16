@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useRouter } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { queryClient } from "@/lib/queryClient";
 import {
   loadAdminProfile,
   signInWithUsername,
@@ -87,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       void refresh();
       router.invalidate();
-      if (event !== "SIGNED_OUT") router.state.context.queryClient.invalidateQueries();
+      if (event !== "SIGNED_OUT") queryClient.invalidateQueries();
     });
     return () => data.subscription.unsubscribe();
   }, [refresh, router]);
@@ -106,7 +107,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signOut = useCallback(async () => {
-    const queryClient = router.state.context.queryClient;
     try {
       await logAuthEvent({ data: { action: "logout" } });
     } catch {

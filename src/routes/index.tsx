@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HomePage } from "@/pages/HomePage";
+import { portalCardsQueryOptions } from "@/hooks/useCards";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -12,5 +13,6 @@ export const Route = createFileRoute("/")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(portalCardsQueryOptions),
   component: HomePage,
 });

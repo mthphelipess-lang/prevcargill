@@ -1,5 +1,6 @@
 import {
   BadgeCheck,
+  Camera,
   ChartNoAxesCombined,
   ClipboardList,
   Container,
@@ -9,11 +10,14 @@ import {
   Flag,
   Forklift,
   Gauge,
+  Globe,
   GraduationCap,
   Headset,
+  KeyRound,
   Leaf,
   Link as LinkIcon,
   MapPin,
+  MonitorSmartphone,
   Package,
   Route,
   Scale,
@@ -58,6 +62,10 @@ export const ICON_OPTIONS = [
   { name: "Headset", label: "Atendimento" },
   { name: "Users", label: "Pessoas" },
   { name: "Link", label: "Link" },
+  { name: "Globe", label: "Portal" },
+  { name: "Camera", label: "Câmera" },
+  { name: "KeyRound", label: "Chave / liberação" },
+  { name: "MonitorSmartphone", label: "Tela / aplicativo" },
   { name: "Settings", label: "Configurações" },
 ] as const;
 
@@ -86,6 +94,10 @@ const ICONS: Record<string, LucideIcon> = {
   Headset,
   Users,
   Link: LinkIcon,
+  Globe,
+  Camera,
+  KeyRound,
+  MonitorSmartphone,
   Settings,
 };
 

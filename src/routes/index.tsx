@@ -16,5 +16,10 @@ export const Route = createFileRoute("/")({
   // Os cards vêm do banco já na primeira resposta, então o servidor e o
   // navegador mostram exatamente o mesmo conteúdo.
   loader: () => listPortalCards(),
-  component: (props) => <HomePage cards={props.loaderData} />,
+  component: HomeView,
 });
+
+function HomeView() {
+  const cards = Route.useLoaderData();
+  return <HomePage cards={cards} />;
+}

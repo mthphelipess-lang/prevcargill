@@ -5,7 +5,7 @@ import { LoadingState } from "@/components/common/LoadingState";
 import { ErrorState } from "@/components/common/ErrorState";
 import { useAdminCards } from "@/hooks/useCards";
 
-export const Route = createFileRoute("/_admin/admin.index")({
+export const Route = createFileRoute("/_admin/admin/")({
   head: () => ({ meta: [{ title: "Painel — Área Restrita" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: AdminDashboard,
 });

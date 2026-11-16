@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,7 @@ import { CardPreview } from "./CardPreview";
 import { IconSelector } from "./IconSelector";
 import { ImageUploader } from "./ImageUploader";
 import type { CardFieldErrors } from "@/hooks/useCardForm";
-import type { CardDraft } from "@/types/card";
+import type { CardDraft, CardGroup, ImageFit, PlaceholderStyle } from "@/types/card";
 
 type Props = {
   initial: CardDraft;
@@ -39,7 +40,7 @@ function FieldError({ message }: { message?: string }) {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="space-y-3 rounded-md border border-border bg-card p-4">
       <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{title}</h2>
@@ -73,7 +74,7 @@ export function CardForm({
       <div className="min-w-0 space-y-4">
         {submitted && errorCount > 0 && (
           <div role="alert" className="rounded-md border border-danger/40 bg-danger/5 p-3 text-sm text-danger">
-            Revise os {errorCount} {errorCount === 1 ? "campo destacado" : "campos destacados"} abaixo.
+            Revise {errorCount === 1 ? "o campo destacado" : `os ${errorCount} campos destacados`} abaixo.
           </div>
         )}
 
@@ -85,7 +86,7 @@ export function CardForm({
               value={initial.name}
               maxLength={50}
               aria-invalid={Boolean(errors.name)}
-              onChange={(e) => onChange("name", e.target.value as never)}
+              onChange={(e) => onChange("name", e.target.value)}
             />
             <FieldError message={errors.name} />
           </div>
@@ -97,18 +98,14 @@ export function CardForm({
               maxLength={150}
               rows={2}
               aria-invalid={Boolean(errors.description)}
-              onChange={(e) => onChange("description", e.target.value as never)}
+              onChange={(e) => onChange("description", e.target.value)}
             />
             <FieldError message={errors.description} />
           </div>
         </Section>
 
         <Section title="Ícone">
-          <IconSelector
-            value={initial.icon_name}
-            onChange={(name) => onChange("icon_name", name as never)}
-            describedBy="icon-help"
-          />
+          <IconSelector value={initial.icon_name} onChange={(name) => onChange("icon_name", name)} describedBy="icon-help" />
           <p id="icon-help" className="text-xs text-muted-foreground">
             O ícone aparece ao lado do nome e também quando o card não tem imagem.
           </p>
@@ -119,7 +116,7 @@ export function CardForm({
           <ImageUploader
             value={initial.image_url}
             folderId={folderId}
-            onChange={(value) => onChange("image_url", value as never)}
+            onChange={(value) => onChange("image_url", value)}
             describedBy="image-help"
           />
           <p id="image-help" className="text-xs text-muted-foreground">
@@ -132,16 +129,13 @@ export function CardForm({
               value={initial.image_alt ?? ""}
               maxLength={200}
               aria-invalid={Boolean(errors.image_alt)}
-              onChange={(e) => onChange("image_alt", e.target.value as never)}
+              onChange={(e) => onChange("image_alt", e.target.value)}
             />
             <FieldError message={errors.image_alt} />
           </div>
           <div className="space-y-1.5">
             <Label htmlFor="card-image-fit">Como a imagem preenche o card</Label>
-            <Select
-              value={initial.image_fit}
-              onValueChange={(value) => onChange("image_fit", value as never)}
-            >
+            <Select value={initial.image_fit} onValueChange={(value) => onChange("image_fit", value as ImageFit)}>
               <SelectTrigger id="card-image-fit">
                 <SelectValue />
               </SelectTrigger>
@@ -155,7 +149,7 @@ export function CardForm({
             <Label htmlFor="card-placeholder">Sem imagem, mostrar</Label>
             <Select
               value={initial.placeholder_style}
-              onValueChange={(value) => onChange("placeholder_style", value as never)}
+              onValueChange={(value) => onChange("placeholder_style", value as PlaceholderStyle)}
             >
               <SelectTrigger id="card-placeholder">
                 <SelectValue />
@@ -176,7 +170,7 @@ export function CardForm({
               value={initial.video_url ?? ""}
               placeholder="https://..."
               aria-invalid={Boolean(errors.video_url)}
-              onChange={(e) => onChange("video_url", e.target.value as never)}
+              onChange={(e) => onChange("video_url", e.target.value)}
             />
             <FieldError message={errors.video_url} />
           </div>
@@ -190,7 +184,7 @@ export function CardForm({
               value={initial.destination_url}
               placeholder="https://..."
               aria-invalid={Boolean(errors.destination_url)}
-              onChange={(e) => onChange("destination_url", e.target.value as never)}
+              onChange={(e) => onChange("destination_url", e.target.value)}
             />
             <FieldError message={errors.destination_url} />
           </div>
@@ -201,7 +195,7 @@ export function CardForm({
             <Switch
               id="card-newtab"
               checked={initial.open_in_new_tab}
-              onCheckedChange={(checked) => onChange("open_in_new_tab", checked as never)}
+              onCheckedChange={(checked) => onChange("open_in_new_tab", checked === true)}
             />
           </div>
         </Section>
@@ -216,13 +210,13 @@ export function CardForm({
                 min={1}
                 value={initial.display_order}
                 aria-invalid={Boolean(errors.display_order)}
-                onChange={(e) => onChange("display_order", e.target.value as never)}
+                onChange={(e) => onChange("display_order", Number(e.target.value))}
               />
               <FieldError message={errors.display_order} />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="card-group">Fileira</Label>
-              <Select value={initial.row_group} onValueChange={(value) => onChange("row_group", value as never)}>
+              <Select value={initial.row_group} onValueChange={(value) => onChange("row_group", value as CardGroup)}>
                 <SelectTrigger id="card-group">
                   <SelectValue />
                 </SelectTrigger>
@@ -239,7 +233,7 @@ export function CardForm({
                   <button
                     key={color}
                     type="button"
-                    onClick={() => onChange("accent_color", color as never)}
+                    onClick={() => onChange("accent_color", color)}
                     aria-pressed={initial.accent_color === color}
                     className={
                       "min-h-11 flex-1 rounded-md border-2 px-2 text-xs font-medium " +
@@ -269,7 +263,7 @@ export function CardForm({
             <Switch
               id="card-enabled"
               checked={initial.enabled}
-              onCheckedChange={(checked) => onChange("enabled", checked as never)}
+              onCheckedChange={(checked) => onChange("enabled", checked === true)}
             />
           </div>
         </Section>

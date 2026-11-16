@@ -1,4 +1,4 @@
-import { Link, createFileRoute, navigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { LockKeyhole } from "lucide-react";
@@ -26,6 +26,7 @@ export const Route = createFileRoute("/admin/login")({
 
 function AdminLoginPage() {
   const { signIn, status } = useAuth();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -34,7 +35,7 @@ function AdminLoginPage() {
 
   useEffect(() => {
     if (status === "signedIn") void navigate({ to: "/admin", replace: true });
-  }, [status]);
+  }, [status, navigate]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();

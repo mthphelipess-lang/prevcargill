@@ -1,4 +1,4 @@
-import { createFileRoute, navigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CardTable } from "@/components/admin/CardTable";
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_admin/admin/cards")({
 });
 
 function AdminCardsPage() {
+  const navigate = useNavigate();
   const { data: cards, isPending, isError } = useAdminCards();
   const toggle = useSetCardEnabled();
   const remove = useDeleteCard();

@@ -2,9 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Database } from "@/integrations/supabase/types";
-import { cardSchema } from "@/schemas/cardSchema";
+import { cardSchema, cardWithIdSchema, type CardFormValues } from "@/schemas/cardSchema";
 import { isStoragePath, type CardDraft, type CardRow } from "@/types/card";
-import { z } from "zod";
 
 const BUCKET = "portal-card-images";
 /** URL temporária: 1h. Usada só para exibir a imagem privada. */
@@ -17,8 +16,11 @@ const CARD_COLUMNS =
 export type CardWithImage = CardRow & { image_source_url: string | null };
 
 type AuthedContext = { supabase: SupabaseClient<Database>; userId: string };
+type CardInsert = Database["public"]["Tables"]["portal_cards"]["Insert"];
+type LogInsert = Database["public"]["Tables"]["admin_activity_logs"]["Insert"];
 
 export type CardAction = "login_success" | "logout" | "password_changed";
+export type CardLogAction = CardAction | "card_created" | "card_updated" | "card_enabled" | "card_disabled" | "card_deleted";
 
 /**
  * Cliente público somente-leitura. Usado durante o SSR da página inicial,
@@ -50,38 +52,36 @@ async function signImage(value: string | null): Promise<string | null> {
   return data?.signedUrl ?? null;
 }
 
-async function withSignedImages(rows: CardRow[]): Promise<CardWithImage[]> {
-  return Promise.all(
-    rows.map(async (row) => ({
-      ...row,
-      image_source_url: row.image_url,
-      image_url: await signImage(row.image_url),
-    })),
-  );
+async function signOne(row: CardRow): Promise<CardWithImage> {
+  return { ...row, image_source_url: row.image_url, image_url: await signImage(row.image_url) };
+}
+
+async function signMany(rows: CardRow[]): Promise<CardWithImage[]> {
+  return Promise.all(rows.map(signOne));
 }
 
 /** Confirma o papel de administrador do usuário da sessão. */
-async function assertAdmin(supabase: SupabaseClient<Database>, userId: string): Promise<void> {
+async function assertAdmin(supabase: SupabaseClient<Database>): Promise<void> {
   const { data, error } = await supabase.rpc("is_admin");
   if (error || !data) throw new Error("Acesso restrito a administradores.");
-  void userId;
 }
 
 async function logEvent(
   context: AuthedContext,
-  action: CardAction | "card_created" | "card_updated" | "card_enabled" | "card_disabled" | "card_deleted",
+  action: CardLogAction,
   card?: Pick<CardRow, "id" | "name" | "destination_url" | "enabled">,
 ): Promise<void> {
-  await context.supabase.from("admin_activity_logs").insert({
+  const entry: LogInsert = {
     user_id: context.userId,
     action,
     entity_type: card ? "portal_card" : null,
     entity_id: card?.id ?? null,
     details: card ? { name: card.name, destination_url: card.destination_url, enabled: card.enabled } : null,
-  });
+  };
+  await context.supabase.from("admin_activity_logs").insert(entry);
 }
 
-function normalizeDraft(draft: CardDraft): Record<string, unknown> {
+function normalizeDraft(draft: CardFormValues): CardInsert {
   return {
     name: draft.name.trim(),
     description: draft.description?.trim() ? draft.description.trim() : null,
@@ -100,8 +100,6 @@ function normalizeDraft(draft: CardDraft): Record<string, unknown> {
   };
 }
 
-const cardWithIdSchema = cardSchema.extend({ id: z.string().uuid() });
-
 /** Cards publicados — usados pela página inicial (SSR e navegação). */
 export const listPortalCards = createServerFn({ method: "GET" }).handler(async (): Promise<CardWithImage[]> => {
   const supabasePublic = publishableClient();
@@ -114,28 +112,28 @@ export const listPortalCards = createServerFn({ method: "GET" }).handler(async (
 
   if (error) throw new Error("Não foi possível carregar os cards do portal.");
   // Só imagens de cards já publicados têm URL assinada; URLs públicas passam direto.
-  return withSignedImages((data ?? []) as CardRow[]);
+  return signMany((data ?? []) as CardRow[]);
 });
 
 /** Todos os cards, inclusive indisponíveis — somente administradores. */
 export const listAdminCards = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<CardWithImage[]> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     const { data, error } = await context.supabase
       .from("portal_cards")
       .select(CARD_COLUMNS)
       .order("row_group", { ascending: true })
       .order("display_order", { ascending: true });
     if (error) throw new Error("Não foi possível carregar os cards.");
-    return withSignedImages((data ?? []) as CardRow[]);
+    return signMany((data ?? []) as CardRow[]);
   });
 
 export const getAdminCard = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { id: string }) => input)
   .handler(async ({ data, context }): Promise<CardWithImage | null> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     const { data: row, error } = await context.supabase
       .from("portal_cards")
       .select(CARD_COLUMNS)
@@ -143,15 +141,14 @@ export const getAdminCard = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error) throw new Error("Não foi possível carregar o card.");
     if (!row) return null;
-    const [signed] = await withSignedImages([row as CardRow]);
-    return signed;
+    return signOne(row as CardRow);
   });
 
 export const createCard = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: CardDraft) => cardSchema.parse(input))
   .handler(async ({ data, context }): Promise<CardWithImage> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     const { data: row, error } = await context.supabase
       .from("portal_cards")
       .insert({ ...normalizeDraft(data), created_by: context.userId, updated_by: context.userId })
@@ -159,15 +156,14 @@ export const createCard = createServerFn({ method: "POST" })
       .single();
     if (error || !row) throw new Error("Não foi possível salvar o card.");
     await logEvent(context, "card_created", row as CardRow);
-    const [signed] = await withSignedImages([row as CardRow]);
-    return signed;
+    return signOne(row as CardRow);
   });
 
 export const updateCard = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: CardDraft & { id: string }) => cardWithIdSchema.parse(input))
   .handler(async ({ data, context }): Promise<CardWithImage> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     const { id, ...draft } = data;
     const { data: row, error } = await context.supabase
       .from("portal_cards")
@@ -177,15 +173,14 @@ export const updateCard = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error || !row) throw new Error("Não foi possível salvar o card.");
     await logEvent(context, "card_updated", row as CardRow);
-    const [signed] = await withSignedImages([row as CardRow]);
-    return signed;
+    return signOne(row as CardRow);
   });
 
 export const setCardEnabled = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { id: string; enabled: boolean }) => input)
   .handler(async ({ data, context }): Promise<CardWithImage | null> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     const { data: row, error } = await context.supabase
       .from("portal_cards")
       .update({ enabled: data.enabled, updated_by: context.userId })
@@ -194,15 +189,14 @@ export const setCardEnabled = createServerFn({ method: "POST" })
       .maybeSingle();
     if (error || !row) throw new Error("Não foi possível atualizar o card.");
     await logEvent(context, data.enabled ? "card_enabled" : "card_disabled", row as CardRow);
-    const [signed] = await withSignedImages([row as CardRow]);
-    return signed;
+    return signOne(row as CardRow);
   });
 
 export const deleteCard = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { id: string }) => input)
   .handler(async ({ data, context }): Promise<{ ok: true }> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     const { data: existing } = await context.supabase
       .from("portal_cards")
       .select("id, name, image_url, destination_url, enabled")
@@ -225,7 +219,7 @@ export const resolveCardImage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: { value: string }) => input)
   .handler(async ({ data, context }): Promise<{ url: string | null }> => {
-    await assertAdmin(context.supabase, context.userId);
+    await assertAdmin(context.supabase);
     return { url: await signImage(data.value) };
   });
 

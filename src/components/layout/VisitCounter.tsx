@@ -19,8 +19,8 @@ export function VisitCounter() {
           return;
         }
       }
-      const { data } = await supabase.from("site_visits").select("total").eq("id", 1).maybeSingle();
-      if (active && data) setTotal(Number(data.total));
+      const { data } = await supabase.rpc("get_visit_total");
+      if (active && data != null) setTotal(Number(data));
     })();
     return () => {
       active = false;

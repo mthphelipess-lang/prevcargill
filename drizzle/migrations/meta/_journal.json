@@ -15,6 +15,13 @@
       "when": 1794833319657,
       "tag": "0001_visit_counter",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794833730903,
+      "tag": "0002_visit_counter_read_function",
+      "breakpoints": true
     }
   ]
 }

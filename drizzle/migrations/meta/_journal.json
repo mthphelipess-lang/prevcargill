@@ -8,6 +8,13 @@
       "when": 1794574535192,
       "tag": "0000_area_restrita_portal_cards",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794833319657,
+      "tag": "0001_visit_counter",
+      "breakpoints": true
     }
   ]
 }

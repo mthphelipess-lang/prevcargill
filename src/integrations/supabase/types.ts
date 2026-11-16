@@ -157,6 +157,21 @@ export type Database = {
         }
         Relationships: []
       }
+      site_visits: {
+        Row: {
+          id: number
+          total: number
+        }
+        Insert: {
+          id?: number
+          total?: number
+        }
+        Update: {
+          id?: number
+          total?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -188,6 +203,7 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: never; Returns: boolean }
+      register_visit: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin"

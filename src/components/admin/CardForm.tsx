@@ -25,7 +25,7 @@ type Props = {
   submitLabel?: string;
   errors?: CardFieldErrors;
   submitted?: boolean;
-  onChange: (key: keyof CardDraft, value: never) => void;
+  onChange: <K extends keyof CardDraft>(key: K, value: CardDraft[K]) => void;
   onSubmit: () => void;
   onCancel: () => void;
 };

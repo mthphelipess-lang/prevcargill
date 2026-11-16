@@ -13,6 +13,8 @@ import { logAuthEvent } from "@/services/cardService";
 const searchSchema = z.object({ redirect: z.string().optional() });
 
 export const Route = createFileRoute("/admin/login")({
+  // Só no navegador: evita que o botão seja clicado antes da tela ficar interativa.
+  ssr: false,
   validateSearch: (search: Record<string, unknown>) => searchSchema.parse(search),
   head: () => ({
     meta: [

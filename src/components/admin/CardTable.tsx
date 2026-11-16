@@ -9,7 +9,7 @@ type Props = {
   onEdit: (id: string) => void;
   onToggle: (card: CardWithImage) => void;
   onDelete: (card: CardWithImage) => void;
-  busyId?: string | null;
+  busyId?: string | null | undefined;
 };
 
 export function CardTable({ cards, onEdit, onToggle, onDelete, busyId }: Props) {

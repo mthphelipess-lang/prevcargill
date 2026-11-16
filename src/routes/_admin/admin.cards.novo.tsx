@@ -1,4 +1,4 @@
-import { createFileRoute, navigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { CardForm, notifySaveError } from "@/components/admin/CardForm";
 import { useCardForm } from "@/hooks/useCardForm";
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/_admin/admin/cards/novo")({
 });
 
 function NewCardPage() {
+  const navigate = useNavigate();
   const create = useCreateCard();
   const { draft, setField, errors, submitted, handleSubmit } = useCardForm(EMPTY_CARD_DRAFT);
 

@@ -1,4 +1,4 @@
-import { Link, createFileRoute, navigate } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { LockKeyhole } from "lucide-react";
@@ -13,6 +13,8 @@ import { logAuthEvent } from "@/services/cardService";
 const searchSchema = z.object({ redirect: z.string().optional() });
 
 export const Route = createFileRoute("/admin/login")({
+  // Só no navegador: evita que o botão seja clicado antes da tela ficar interativa.
+  ssr: false,
   validateSearch: (search: Record<string, unknown>) => searchSchema.parse(search),
   head: () => ({
     meta: [
@@ -26,6 +28,7 @@ export const Route = createFileRoute("/admin/login")({
 
 function AdminLoginPage() {
   const { signIn, status } = useAuth();
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(true);
@@ -34,7 +37,7 @@ function AdminLoginPage() {
 
   useEffect(() => {
     if (status === "signedIn") void navigate({ to: "/admin", replace: true });
-  }, [status]);
+  }, [status, navigate]);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -46,7 +49,13 @@ function AdminLoginPage() {
     }
 
     setBusy(true);
-    const result = await signIn(username, password, remember);
+    let result: Awaited<ReturnType<typeof signIn>>;
+    try {
+      result = await signIn(username, password, remember);
+    } catch (err) {
+      console.error("[login] falha ao entrar", err);
+      result = { ok: false, message: "Não foi possível entrar. Tente novamente." };
+    }
     setBusy(false);
 
     if (!result.ok) {

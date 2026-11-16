@@ -1,4 +1,4 @@
-import { createFileRoute, navigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { CardForm, notifySaveError } from "@/components/admin/CardForm";
@@ -65,6 +65,7 @@ function EditCardPage() {
 }
 
 function EditCardForm({ cardId, initial, update }: { cardId: string; initial: CardDraft; update: ReturnType<typeof useUpdateCard> }) {
+  const navigate = useNavigate();
   const { draft, setField, errors, submitted, handleSubmit } = useCardForm(initial);
 
   async function submit(values: CardDraft) {

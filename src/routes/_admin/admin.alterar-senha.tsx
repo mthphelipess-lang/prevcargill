@@ -15,9 +15,11 @@ export const Route = createFileRoute("/_admin/admin/alterar-senha")({
 
 const EMPTY: PasswordFormValues = { currentPassword: "", newPassword: "", confirmPassword: "" };
 
+type PasswordErrors = { [K in keyof PasswordFormValues]?: string | undefined };
+
 function ChangePasswordPage() {
   const [values, setValues] = useState<PasswordFormValues>(EMPTY);
-  const [errors, setErrors] = useState<Partial<Record<keyof PasswordFormValues, string>>>({});
+  const [errors, setErrors] = useState<PasswordErrors>({});
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -30,7 +32,7 @@ function ChangePasswordPage() {
     event.preventDefault();
     const parsed = passwordSchema.safeParse(values);
     if (!parsed.success) {
-      const next: Partial<Record<keyof PasswordFormValues, string>> = {};
+      const next: PasswordErrors = {};
       for (const issue of parsed.error.issues) {
         const key = String(issue.path[0] ?? "") as keyof PasswordFormValues;
         if (!next[key]) next[key] = issue.message;

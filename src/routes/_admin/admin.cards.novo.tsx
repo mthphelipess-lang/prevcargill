@@ -5,7 +5,7 @@ import { useCardForm } from "@/hooks/useCardForm";
 import { useCreateCard } from "@/hooks/useCards";
 import { EMPTY_CARD_DRAFT, type CardDraft } from "@/types/card";
 
-export const Route = createFileRoute("/_admin/admin.cards.novo")({
+export const Route = createFileRoute("/_admin/admin/cards/novo")({
   head: () => ({ meta: [{ title: "Novo card — Área Restrita" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: NewCardPage,
 });

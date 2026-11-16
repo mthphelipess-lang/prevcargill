@@ -9,7 +9,7 @@ import { useUpdateCard } from "@/hooks/useCards";
 import { getAdminCard } from "@/services/cardService";
 import { toCardDraft, type CardDraft } from "@/types/card";
 
-export const Route = createFileRoute("/_admin/admin.cards.$id.editar")({
+export const Route = createFileRoute("/_admin/admin/cards/$id/editar")({
   head: () => ({ meta: [{ title: "Editar card — Área Restrita" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: EditCardPage,
 });

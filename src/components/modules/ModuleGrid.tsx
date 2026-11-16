@@ -12,7 +12,7 @@ export function ModuleGrid({ cards, variant, label }: Props) {
         "grid grid-cols-1 gap-2.5 min-[420px]:grid-cols-2 md:gap-3.5 xl:gap-4",
         variant === "primary"
           ? "module-grid-primary md:grid-cols-2 lg:grid-cols-4"
-          : "module-grid-secondary md:grid-cols-3 xl:grid-cols-5",
+          : "module-grid-secondary md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
       )}
     >
       {cards.map((card) => (

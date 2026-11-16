@@ -14,6 +14,10 @@ import { Route as AdminRouteRouteImport } from './routes/_admin/route'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminSemAcessoRouteImport } from './routes/admin.sem-acesso'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin.index'
+import { Route as AdminAdminAlterarSenhaRouteImport } from './routes/_admin/admin.alterar-senha'
+import { Route as AdminAdminCardsRouteImport } from './routes/_admin/admin.cards'
+import { Route as AdminAdminCardsNovoRouteImport } from './routes/_admin/admin.cards.novo'
+import { Route as AdminAdminCardsIdEditarRouteImport } from './routes/_admin/admin.cards.$id.editar'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -39,18 +43,46 @@ const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminAdminAlterarSenhaRoute = AdminAdminAlterarSenhaRouteImport.update({
+  id: '/admin/alterar-senha',
+  path: '/admin/alterar-senha',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAdminCardsRoute = AdminAdminCardsRouteImport.update({
+  id: '/admin/cards',
+  path: '/admin/cards',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAdminCardsNovoRoute = AdminAdminCardsNovoRouteImport.update({
+  id: '/novo',
+  path: '/novo',
+  getParentRoute: () => AdminAdminCardsRoute,
+} as any)
+const AdminAdminCardsIdEditarRoute = AdminAdminCardsIdEditarRouteImport.update({
+  id: '/$id/editar',
+  path: '/$id/editar',
+  getParentRoute: () => AdminAdminCardsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/sem-acesso': typeof AdminSemAcessoRoute
+  '/admin/alterar-senha': typeof AdminAdminAlterarSenhaRoute
+  '/admin/cards': typeof AdminAdminCardsRouteWithChildren
   '/admin/': typeof AdminAdminIndexRoute
+  '/admin/cards/novo': typeof AdminAdminCardsNovoRoute
+  '/admin/cards/$id/editar': typeof AdminAdminCardsIdEditarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/sem-acesso': typeof AdminSemAcessoRoute
+  '/admin/alterar-senha': typeof AdminAdminAlterarSenhaRoute
+  '/admin/cards': typeof AdminAdminCardsRouteWithChildren
   '/admin': typeof AdminAdminIndexRoute
+  '/admin/cards/novo': typeof AdminAdminCardsNovoRoute
+  '/admin/cards/$id/editar': typeof AdminAdminCardsIdEditarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -58,20 +90,44 @@ export interface FileRoutesById {
   '/_admin': typeof AdminRouteRouteWithChildren
   '/admin/login': typeof AdminLoginRoute
   '/admin/sem-acesso': typeof AdminSemAcessoRoute
+  '/_admin/admin/alterar-senha': typeof AdminAdminAlterarSenhaRoute
+  '/_admin/admin/cards': typeof AdminAdminCardsRouteWithChildren
   '/_admin/admin/': typeof AdminAdminIndexRoute
+  '/_admin/admin/cards/novo': typeof AdminAdminCardsNovoRoute
+  '/_admin/admin/cards/$id/editar': typeof AdminAdminCardsIdEditarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin/login' | '/admin/sem-acesso' | '/admin/'
+  fullPaths:
+    | '/'
+    | '/admin/login'
+    | '/admin/sem-acesso'
+    | '/admin/alterar-senha'
+    | '/admin/cards'
+    | '/admin/'
+    | '/admin/cards/novo'
+    | '/admin/cards/$id/editar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/login' | '/admin/sem-acesso' | '/admin'
+  to:
+    | '/'
+    | '/admin/login'
+    | '/admin/sem-acesso'
+    | '/admin/alterar-senha'
+    | '/admin/cards'
+    | '/admin'
+    | '/admin/cards/novo'
+    | '/admin/cards/$id/editar'
   id:
     | '__root__'
     | '/'
     | '/_admin'
     | '/admin/login'
     | '/admin/sem-acesso'
+    | '/_admin/admin/alterar-senha'
+    | '/_admin/admin/cards'
     | '/_admin/admin/'
+    | '/_admin/admin/cards/novo'
+    | '/_admin/admin/cards/$id/editar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,14 +174,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/_admin/admin/alterar-senha': {
+      id: '/_admin/admin/alterar-senha'
+      path: '/admin/alterar-senha'
+      fullPath: '/admin/alterar-senha'
+      preLoaderRoute: typeof AdminAdminAlterarSenhaRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/admin/cards': {
+      id: '/_admin/admin/cards'
+      path: '/admin/cards'
+      fullPath: '/admin/cards'
+      preLoaderRoute: typeof AdminAdminCardsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/admin/cards/novo': {
+      id: '/_admin/admin/cards/novo'
+      path: '/novo'
+      fullPath: '/admin/cards/novo'
+      preLoaderRoute: typeof AdminAdminCardsNovoRouteImport
+      parentRoute: typeof AdminAdminCardsRoute
+    }
+    '/_admin/admin/cards/$id/editar': {
+      id: '/_admin/admin/cards/$id/editar'
+      path: '/$id/editar'
+      fullPath: '/admin/cards/$id/editar'
+      preLoaderRoute: typeof AdminAdminCardsIdEditarRouteImport
+      parentRoute: typeof AdminAdminCardsRoute
+    }
   }
 }
 
+interface AdminAdminCardsRouteChildren {
+  AdminAdminCardsNovoRoute: typeof AdminAdminCardsNovoRoute
+  AdminAdminCardsIdEditarRoute: typeof AdminAdminCardsIdEditarRoute
+}
+
+const AdminAdminCardsRouteChildren: AdminAdminCardsRouteChildren = {
+  AdminAdminCardsNovoRoute: AdminAdminCardsNovoRoute,
+  AdminAdminCardsIdEditarRoute: AdminAdminCardsIdEditarRoute,
+}
+
+const AdminAdminCardsRouteWithChildren = AdminAdminCardsRoute._addFileChildren(
+  AdminAdminCardsRouteChildren,
+)
+
 interface AdminRouteRouteChildren {
+  AdminAdminAlterarSenhaRoute: typeof AdminAdminAlterarSenhaRoute
+  AdminAdminCardsRoute: typeof AdminAdminCardsRouteWithChildren
   AdminAdminIndexRoute: typeof AdminAdminIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminAdminAlterarSenhaRoute: AdminAdminAlterarSenhaRoute,
+  AdminAdminCardsRoute: AdminAdminCardsRouteWithChildren,
   AdminAdminIndexRoute: AdminAdminIndexRoute,
 }
 

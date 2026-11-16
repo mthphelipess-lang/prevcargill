@@ -8,7 +8,7 @@ import { ErrorState } from "@/components/common/ErrorState";
 import { useAdminCards, useDeleteCard, useSetCardEnabled } from "@/hooks/useCards";
 import type { CardWithImage } from "@/services/cardService";
 
-export const Route = createFileRoute("/_admin/admin.cards")({
+export const Route = createFileRoute("/_admin/admin/cards")({
   head: () => ({ meta: [{ title: "Cards — Área Restrita" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: AdminCardsPage,
 });

@@ -8,7 +8,7 @@ import { passwordSchema, type PasswordFormValues } from "@/schemas/passwordSchem
 import { changePassword } from "@/services/authService";
 import { logAuthEvent } from "@/services/cardService";
 
-export const Route = createFileRoute("/_admin/admin.alterar-senha")({
+export const Route = createFileRoute("/_admin/admin/alterar-senha")({
   head: () => ({ meta: [{ title: "Alterar senha — Área Restrita" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: ChangePasswordPage,
 });

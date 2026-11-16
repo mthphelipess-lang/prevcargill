@@ -172,6 +172,21 @@ export type Database = {
         }
         Relationships: []
       }
+      site_visits_monthly: {
+        Row: {
+          month: string
+          total: number
+        }
+        Insert: {
+          month: string
+          total?: number
+        }
+        Update: {
+          month?: string
+          total?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -195,6 +210,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_visit_stats: {
+        Args: never
+        Returns: {
+          current_month: number
+          previous_month: number
+        }[]
+      }
       get_visit_total: { Args: never; Returns: number }
       has_role: {
         Args: {

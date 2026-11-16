@@ -1,5 +1,6 @@
 import { Mail } from "lucide-react";
 import { portalConfig } from "@/config/portal";
+import { VisitCounter } from "./VisitCounter";
 
 export function Footer() {
   const mailto = portalConfig.supportEmail;
@@ -26,6 +27,7 @@ export function Footer() {
               {portalConfig.supportLabel}: {portalConfig.supportEmail}
             </span>
           </a>
+          <VisitCounter />
         </div>
       </div>
     </footer>

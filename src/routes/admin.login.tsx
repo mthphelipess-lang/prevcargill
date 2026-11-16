@@ -47,7 +47,13 @@ function AdminLoginPage() {
     }
 
     setBusy(true);
-    const result = await signIn(username, password, remember);
+    let result: Awaited<ReturnType<typeof signIn>>;
+    try {
+      result = await signIn(username, password, remember);
+    } catch (err) {
+      console.error("[login] falha ao entrar", err);
+      result = { ok: false, message: "Não foi possível entrar. Tente novamente." };
+    }
     setBusy(false);
 
     if (!result.ok) {
